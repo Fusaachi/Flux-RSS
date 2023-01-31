@@ -1,0 +1,190 @@
+#card {
+    display: flex;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: lighter;
+    margin: 60px auto;
+    padding: 30px;
+    width: 800px;
+    align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+  }
+  
+  img {
+    width: 300px;
+    border-radius: 10px;
+  }
+  
+  #cardRightSide {
+    text-align: center;
+    padding: 30px;
+    width: 700px;
+  }
+  
+  #title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: black;
+    display: contents;
+  }
+  
+  .formText {
+   text-align: center;
+  }
+  
+  #pageLink {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border: 1px solid;
+    border-radius: 5px;
+    text-align: center;
+    width: 800px;
+    height: 30px;
+    margin-top: 10px;
+  }
+  
+  #formBtn {
+    cursor: pointer;
+    color: white;
+    padding: 20px;
+    background-color: #12263A;
+    border: none;
+    border-radius: 10px;
+    width: 200px;
+  }
+  
+  #formBtn:hover {
+    background-color: black;
+  }
+  
+  .formBtn {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  #numberChoice {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  #articlesNumberInput {
+    width: 50px;
+    height: 30px;
+  }
+  
+  .textFormat {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    font-weight: lighter;
+  }
+  
+  #pagesnumbers {
+    display: flex;
+    justify-content: end;
+    margin-right: 60px;
+    margin-top: 40px;
+    align-items: center;
+  }
+  
+  .pagenumber {
+    border: none;
+    background-color: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 17px;
+  }
+  
+  .active {
+    background-color: black;
+    color: white;
+  }
+  
+  .pagenumber:hover {
+    background-color: black;
+    color: white;
+  }
+  
+  .numberscards {
+    margin-left: 10px;
+  }
+  
+  #invalink {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  #willSmithCrying {
+    height: 400px;
+    width: 600px;
+  }
+  
+  #willDiv {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #backToTopDiv {
+    text-align: end;
+    margin: 30px auto;
+    width: fit-content;
+  }
+  
+  #backToTopBtn {
+    border: none;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  #backToTopBtn:hover {
+    background-color: black;
+    color: white;
+  }
+  
+  @media screen and (max-width: 1024px) {
+  
+    img {
+      width: 100%;
+      margin: 0 auto;
+    }
+  
+    #card {
+     display: block;
+     width: 70%;
+     font-size: 90%;
+    }
+  
+    #cardRightSide {
+      width: 100%;
+      padding: 0;
+      margin-top: 20px;
+    }
+  
+     #pageLink {
+      width: 80%;
+    }
+  
+    .textFormat {
+      font-size: 100%;
+    }
+  
+    #willSmithCrying {
+      width: 90%;
+      height: 90%;
+    }
+  
+    #formBtn {
+      width: 30%;
+    }
+  
+    #pagesnumbers {
+      justify-content: center;
+      font-size: 80%;
+    }
+  }

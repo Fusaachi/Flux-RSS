@@ -1,81 +1,104 @@
 <?php
-include_once("/wamp64/www/FluxRSS/assets/inc/front/head.php");
+include("/wamp64/www/FluxRSS/assets/inc/front/head.php");
 include("/wamp64/www/FluxRSS/assets/inc/front/header.php");
 ?>
-<main>
-    <div class="text-center">
-        <h1>Recherche</h1>
-    </div>
-    <div class="container ">
-            <div class="row">
-        <?php
-
-
-        if (!isset($_POST["url"])) {
-        ?>
-            <form class="text-center mt-5 mb-5" action="#" method="post">
-                <label for="post">Entrer votre flux RSS : </label>
-                <input type="text" name="url">
-                <input type="submit" value="valider">
-            </form>
-
-            <?php
-        } else {
-        ?> <form class="text-center mt-5 mb-5" action="#" method="post">
-                <label for="post">Entrer votre flux RSS : </label>
-                <input type="text" name="url">
-                <input type="submit" value="valider">
-            </form>
-            <?php
-            echo appel($_POST["url"]);
-        }
-    ?>
+    <div id="mainDivForm">
+      <!-- Form starts here -->
+      <form action="" method="get" class="form">
+        <div class="formText textFormat ">
+          <div>
+            <label for="pageLink">Merci d'entrer votre lien RSS ci-dessous</label>
+          </div>
+          <div>
+            <!-- The code below makes that if you enter a link, the link stays in the link bar till you delete it. Needed to pass it in the url. -->
+            <?php if(isset($_GET['pageLink'])) {
+              $urlValue = $_GET['pageLink'];
+            } else {
+              $urlValue = '';
+            }
+            ?>
+            <!-- end -->
+            <input type="text" name="pageLink" id="pageLink" class="textFormat" required value=<?= $urlValue ?>>
+          </div>
         </div>
-    </div>
-<?php
-
-        function appel($url)
-        {
-
+        <!-- Default value for article number filter is 5, but if its more the code below get the number from url via GET and put it in the range input -->
+        <div class="textFormat" id="numberChoice">
+          <label for="articlesNumber">Nombre d'articles par page : </label>
+          <?php if(isset($_GET['articlesNumber'])) {
+              $numberValue = $_GET['articlesNumber'];
+            } else {
+              $numberValue = 5;
+            }
+            ?>
+          <input type="number" class="textFormat" id="articlesNumberInput" name="articlesNumber" min="5" max="100" step="5" value=<?= $numberValue  ?>>
+        </div>
+        <!-- end -->
+        <div class="formBtn">
+          <input type="submit" value="C'est parti!" id="formBtn" class="textFormat">
+        </div>
+        <!-- This is the pages numbers buttons which are generated depending on how much articles per page there is -->
+        <?php if (isset($_GET['pageLink']) && isset($_GET['articlesNumber'])) {
+          $url = $_GET['pageLink'];
+          // REGEX below checks if the url is valid
+          if (file_get_contents($url)) {
             $xml = file_get_contents($url);
             $xml = simplexml_load_string($xml);
+            // intval function is there to get the number from the articlesNumber string
+            $numberOfArticlesWantedInteger = intval($_GET['articlesNumber']);
 
-            echo "<h1 class='mt-5 mb-3'>" . $xml->channel->title . "</h1>";
-            foreach ($xml->channel->item as $key) {
-
-                $content = $key->children('media', true)->content;
-                $contentattr = $content->attributes();
-                $image = $contentattr["url"];
-            ?>
-                <div class="col">
-                    <div class="card m-none" style="width: 18rem; ">
-                        <img src="<?= $image; ?>" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $key->title; ?></h5>
-                            <p class="card-text"><?= $key->pubDate; ?></p>
-                            <p class="card-text"><?= $key->description; ?></p>
-                            <p class="card-text"><?= $key->guid ?></p>
-                        </div>
-                    </div>
-                </div>
-        <?php
+            // The numberOfPages variable is there to count how much page we need
+            $numberOfPages = count($xml->channel->item) / $numberOfArticlesWantedInteger;
+            // Then we use numberOfPages to stop the loop when generating the pages buttons
+            echo "<div id='pagesnumbers'>";
+            echo "<p class='textFormat'> Pages :</p>";
+            // In the for loop, we use two variables :
+            // $i to put the right value in the URL which is the one we gonna pass in the function later when we click and submit the page
+            // $k to DISPLAY the value inside the button since we are human and counting from page 1 and not 0
+            for ($j = 0, $k = 1; $j < $numberOfPages; $j++, $k++) {
+              echo "<div class='numberscards'>";
+              // If this is the active page it will echo the div with black background
+              if ($j == $_GET['pageLink']) {
+                echo "<button type='submit' value='$j' name='page' class='pagenumber active textFormat'>$k</button>";
+              } else {
+                echo "<button type='submit' value='$j' name='page' class='pagenumber textFormat'>$k</button>";
+              }
+              echo "</div>";
             }
+            echo "</div>";
+          }
         }
-        ?>
-</main>
-
-
-
-
-
-
-
-
-
-
-
-</div>
-</main>
+          ?>
+        <!-- End of pages numbers buttons -->
+      </form>
+      <!-- End of form -->
+    </div>
+    <!-- The function div below is where all the articles are displayed -->
+    <div id="xmlFunctionDiv">
+      <?php
+        require_once('xmlfunction.php');
+        if (isset($_GET['pageLink']) && !empty($_GET['pageLink'])) {
+            $url = $_GET['pageLink'];
+            if ( isset($_GET['articlesNumber'])){
+              $numberOfArticles = $_GET['articlesNumber'];
+            } else {
+              $numberOfArticles = 100;
+            }
+            if ( isset($_GET['page'])) {
+          $page = $_GET['page'];
+            } else {
+              $page = 1;
+            }
+            if (file_get_contents($url)) {
+              xmlToPage($url, $numberOfArticles, $page);
+            } else {
+              // Invalid input error message
+              echo "<div id='invalink' class='textFormat'> Lien non valide, veuillez entrer un lien .XML valide </div>";
+              echo "<div id='willDiv'><img src='./images/will-smith-crying-meme.jpeg' alt='Will Smith crying' id='willSmithCrying'><div>";
+            }
+          }
+      ?>
+    </div>
+    <!-- End of the function div -->
 <?php
 include("/wamp64/www/FluxRSS/assets/inc/front/footer.php")
 ?>
